@@ -1,5 +1,11 @@
 BeforeAll {
-    . ($PSCommandPath.Replace("Tests\", "").Replace("Tests.ps1", "ps1"))
+    $thisSubjectFunction = $PSCommandPath.Replace("Tests\", "").Replace("Tests.ps1", "ps1")
+    . $thisSubjectFunction
+
+    $functionPath = Split-Path $thisSubjectFunction -Parent
+    $Newboxpath = Join-Path $functionPath -ChildPath ".\New-Box.ps1"
+    . $Newboxpath
+
 }
 
 Describe "Testing Box Moves" {

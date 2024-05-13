@@ -17,7 +17,7 @@ Describe "New Box" {
         }
 
         It "Returns an object with 9 properties" {
-            ($foo | Get-Member -MemberType NoteProperty).count | Should -Be 9
+            ($ThisBox | Get-Member -MemberType NoteProperty).count | Should -Be 9
         }
     }
 }

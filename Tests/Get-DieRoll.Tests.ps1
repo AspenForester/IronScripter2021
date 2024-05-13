@@ -3,8 +3,8 @@
 # functionality and commands
 
 BeforeAll {
-        . ($PSCommandPath.Replace("Tests\","").Replace("Tests.ps1","ps1"))
-    }
+    . ($PSCommandPath.Replace("Tests\", "").Replace("Tests.ps1", "ps1"))
+}
 Describe "Die Rolls" {
     $DieHash = (
         @{
@@ -25,7 +25,6 @@ Describe "Die Rolls" {
         @{
             DieSides = 20
         }
-
     )
 
     Context "D<DieSides>" -ForEach $DieHash {
@@ -36,8 +35,8 @@ Describe "Die Rolls" {
             $Script:ThisAverage = ((1..$diesides) | Measure-Object -Average).Average
         }
 
-        It "returns 100 rolls" {
-            $results.count | should -BeExactly $rollcount
+        It "returns 1000 rolls" {
+            $results.count | Should -BeExactly $rollcount
         }
 
         It "has a max of $diesides" {
@@ -51,6 +50,26 @@ Describe "Die Rolls" {
         It "has an average of <ThisAverage> +/- 10%" {
             ($results | Measure-Object -Average).Average | Should -BeGreaterThan (0.9 * $ThisAverage)
             ($results | Measure-Object -Average).Average | Should -BeLessThan (1.1 * $ThisAverage)
+        }
+    }
+
+    # you could change this to "Returns the correct number of rolls"
+    # and skip the additional sub-contexts
+    Context "Number of rolls" {
+        Context "Player asks for zero rolls" {
+            It "returns zero die rolls" {
+                Get-DieRoll -Count 0 | Should -BeNullOrEmpty
+            }
+        }
+        Context "Player asks for one roll" {
+            It "returns one die roll" {
+                (Get-DieRoll -Count 1).count | Should -Be 1
+            }
+        }
+        Context "Player asks for five rolls" {
+            It "returns five die roll" {
+                (Get-DieRoll -Count 5).count | Should -Be 5
+            }
         }
     }
 }
